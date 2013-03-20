@@ -7,7 +7,7 @@ from django.shortcuts import render_to_response, redirect
 from django.core.urlresolvers import reverse
 from models import *
 
-youtube_pattern = r'youtube\.com/watch\?v=[0-9, a-z, A-Z, \-]+'
+youtube_pattern = r'youtube\.com/watch\?v=[0-9, a-z, A-Z, \-, _]+'
 
 
 def file2md5(url, quality):

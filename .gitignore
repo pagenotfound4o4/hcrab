@@ -1,7 +1,9 @@
 .idea/*
 yt/*
+jaylab/static_root/
 *.pyc
 *.egg-info
 *.swp
 jaylab/local_settings.py
 jaylab/db/*
+log/

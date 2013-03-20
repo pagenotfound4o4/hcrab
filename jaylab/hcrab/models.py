@@ -64,11 +64,11 @@ class DownloadRecord(models.Model):
     def get_download_url(self):
         if self.vfile.status != 'finished':
             return ''
-        return settings.HOST + settings.VIDEO_DIR + '/' + self.vfile.get_filename()
+        return settings.HOST + settings.VIDEO_URL + '/' + self.vfile.get_filename()
 
     def get_srt_url(self):
         if self.vfile.has_subtitle:
-            return settings.HOST + settings.VIDEO_DIR + '/' + self.vfile.get_srt_filename()
+            return settings.HOST + settings.VIDEO_URL + '/' + self.vfile.get_srt_filename()
         return ''
 
     def get_status(self):

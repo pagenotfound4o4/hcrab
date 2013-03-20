@@ -10,8 +10,8 @@ server {
     }
 
     location /static_root/ {
-        root /home/jay/website/download.jaylab.org/jaylab/static_root;
-        rewrite ^/site_media/(.*)$ /$1 break;
+        root /home/jay/websites/download.jaylab.org/jaylab/static_root/;
+        rewrite ^/static_root/(.*)$ /$1 break;
     }
 
     location / {
