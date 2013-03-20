@@ -1,0 +1,6 @@
+.idea/*
+*.pyc
+*.egg-info
+*.swp
+jaylab/local_settings.py
+jaylab/db/*
