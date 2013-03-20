@@ -6,5 +6,5 @@ PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 #setting for app hcrab
 HOST = 'http://download.jaylab.org'
 VIDEO_DIR = ''
-EXPIRE_TIME = 300
+EXPIRE_TIME = 86400
 YOUTUBE_DL_PATH = '/usr/local/bin/youtube-dl'
