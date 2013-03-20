@@ -1,32 +1,16 @@
 server {
     listen   80 ;
-    server_name www.ja;
+    server_name download.jaylab.org;
 
-    access_log  /home/jay/log/jayproxy/access.log;
-
-    location /download/ {
-        add_header Content-Disposition "attachment";
-        root /home/jay/websites/jayproxy/download/;
-        rewrite ^/download/(.*)$ /$1 break;
-    }
+    access_log /home/jay/websites/download.jaylab.org/log/access.log;
 
     location /yt/ {
         add_header Content-Disposition "attachment";
-        root /home/jay/websites/jayproxy/;
+        root /home/jay/websites/download.jaylab.org/;
     }
 
-    location = /jayproxy.pac {
-        root /home/jay/websites/jayproxy/pac/;
-        rewrite ^/(.*)$ /$1 break;
-    }
-    
-    location /media/ {
-        root /usr/local/lib/python2.6/dist-packages/Django-1.3.1-py2.6.egg/django/contrib/admin/media/;
-        rewrite ^/media/(.*)$ /$1 break;
-    }
-
-    location /site_media/ {
-        root /home/jay/websites/jayproxy/site_media;
+    location /static_root/ {
+        root /home/jay/website/download.jaylab.org/jaylab/static_root;
         rewrite ^/site_media/(.*)$ /$1 break;
     }
 
