@@ -5,7 +5,7 @@ from django.conf import settings
 from jaylab.hcrab.models import *
 
 command = '%s -i -c -R 3 --write-info-json --write-srt -o %s -f 18 %s'
-vfiles = VideoFile.objects.filter(status='queue').order_by('created_at')[:3]
+vfiles = VideoFile.objects.filter(status='queue').order_by('created_at')[:2]
 for f in vfiles:
     f.status = 'downloading'
     f.save()
