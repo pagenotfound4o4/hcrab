@@ -6,4 +6,5 @@
 
 django>=1.5
 south>=0.7.6
+dropbox
 django-extensions

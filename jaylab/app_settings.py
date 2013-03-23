@@ -9,3 +9,8 @@ SERVER_VIDEO_DIR = '/home/jay/websites/download.jaylab.org/yt'
 VIDEO_URL = '/yt'
 EXPIRE_TIME = 86400
 YOUTUBE_DL_PATH = '/usr/local/bin/youtube-dl'
+
+#for dropbox
+ENABLE_DROPBOX = True
+if ENABLE_DROPBOX:
+    from dropbox_settings import *

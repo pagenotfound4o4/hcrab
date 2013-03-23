@@ -15,6 +15,27 @@ quality_choices = (
 )
 
 
+class DropboxUser(models.Model):
+    class Meta:
+        verbose_name = u'Dropbox用户'
+        verbose_name_plural = verbose_name
+
+    uid = models.CharField(max_length=50, unique=True)
+    email = models.CharField(max_length=400, blank=True, default='')
+    country = models.CharField(max_length=50, blank=True, default='')
+    name = models.CharField(max_length=400, blank=True, default='')
+    quota_info = models.CharField(max_length=400, blank=True, default='')
+    referral_link = models.CharField(max_length=400, blank=True, default='')
+
+    access_key = models.CharField(max_length=50, blank=True, default='')
+    access_secret = models.CharField(max_length=50, blank=True, default='')
+
+    is_valid = models.BooleanField(default='True')
+
+    def __unicode__(self):
+        return self.name
+
+
 class VideoFile(models.Model):
     class Meta:
         verbose_name = u'视频文件'
@@ -51,12 +72,15 @@ class VideoFile(models.Model):
             return '%i MB' % (self.length/1024.0/1024.0)
         return ''
 
+
 class DownloadRecord(models.Model):
     class Meta:
         verbose_name = u'下载记录'
         verbose_name_plural = verbose_name
 
-    session_id = models.CharField(max_length=50)
+    session_id = models.CharField(max_length=50, blank=True, default='')
+    dropbox_user = models.ForeignKey(DropboxUser, null=True)
+
     created_at = models.DateTimeField(auto_now_add=True)
 
     vfile = models.ForeignKey(VideoFile)
@@ -77,4 +101,5 @@ class DownloadRecord(models.Model):
 
     def __unicode__(self):
         return 'Download_record_%i' % self.id
+
 

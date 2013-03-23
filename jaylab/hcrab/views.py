@@ -5,6 +5,8 @@ from django.conf import settings
 from django.core.context_processors import csrf
 from django.shortcuts import render_to_response, redirect
 from django.core.urlresolvers import reverse
+from dropbox import client, rest, session
+
 from models import *
 
 youtube_pattern = r'youtube\.com/watch\?v=[0-9, a-z, A-Z, \-, _]+'
@@ -77,5 +79,57 @@ def add(request):
     y, is_created = VideoFile.objects.get_or_create(md5=m5, watch_url=url, quality=quality)
     DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
     return redirect(back_url)
+
+
+def dropbox_sign(request):
+    sess = session.DropboxSession(settings.DROPBOX_APP_KEY, settings.DROPBOX_APP_SECRET,
+                                  settings.DROPBOX_ACCESS_TYPE)
+    request_token = sess.obtain_request_token()
+    url = sess.build_authorize_url(request_token,
+                                   oauth_callback=settings.DROPBOX_AUTHRIZED_CALLBACK_URL)
+
+    request.session['request_key'] = request_token.key
+    request.session['request_secret'] = request.secret
+    return redirect(url)
+
+
+def dropbox_authrized(request):
+    back_url = reverse(index)
+
+    uid = request.Get.get('uid', '')
+    oauth_token = request.Get.get('oauth_token', '')
+    if not uid and not oauth_token:
+        info = u'Dropbox 认证出问题了 :( 麻烦再一遍。'
+        return render_to_response('hcrab/info.html',
+                                  {'info': info,
+                                   'interval': 3,
+                                   'back_url': back_url})
+
+    request_key = request.session.get('request_key')
+    request_secret = request.session.get('request_secret')
+    if not request_key and not request_secret:
+        info = u'请打开浏览器cookie支持。'
+        return render_to_response('hcrab/info.html',
+                                  {'info': info,
+                                   'interval': 3,
+                                   'back_url': back_url})
+
+    request_token = session.OAuthToken(request_key, request_secret)
+    sess = session.DropboxSession(settings.DROPBOX_APP_KEY, settings.DROPBOX_APP_SECRET,
+                                  settings.DROPBOX_ACCESS_TYPE)
+    access_token = sess.obtain_access_token(request_token)
+
+    user, is_created = DropboxUser.objects.get_or_create(uid=uid)
+    user.access_key = access_token.key
+    user.access_secret = access_token.secret
+    #client = client = client.DropboxClient(sess)
+    #info = client.account_info()
+    user.save()
+    info = 'Ok, Dropbox 认证成功 :)'
+    return render_to_response('hcrab/info.html',
+                              {'info': info,
+                               'interval': 3,
+                               'back_url': back_url})
+
 
 
