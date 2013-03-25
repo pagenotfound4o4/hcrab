@@ -19,7 +19,7 @@ def file2md5(url, quality):
 
 
 def index(request):
-    records = None
+    records = []
     dropbox_uid = request.session.get('dropbox_uid', '')
     if dropbox_uid:
         records = DownloadRecord.objects.filter(dropbox_user__uid=dropbox_uid).order_by('-created_at')[:100]
@@ -87,9 +87,13 @@ def add(request):
     m5 = file2md5(url, quality)
     y, is_created = VideoFile.objects.get_or_create(md5=m5, watch_url=url, quality=quality)
     if dropbox_user:
-        DownloadRecord.objects.get_or_create(dropbox_user=dropbox_user, vfile=y)
+        dr,is_created = DownloadRecord.objects.get_or_create(dropbox_user=dropbox_user, vfile=y)
+        dr.status = 'queue'
+        dr.save()
     else:
-        DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
+        dr,is_created = DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
+    	dr.status = 'queue'
+        dr.save()
     return redirect(back_url)
 
 

@@ -18,16 +18,16 @@ for r in to_download:
         vfile.save()
         print 'has not download. start to download.'
         cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), vfile.watch_url)
-        r = subprocess.call(cmd, shell=True)
+        subprocess.call(cmd, shell=True)
         if not vfile.is_downloaded():
             vfile.status = 'download_failed'
             vfile.save()
             print 'downloaded failed.'
             continue
         print 'downloaded.'
-        vfile.has_subtitle = os.path.exists(vfile.get_srt_file_path)
+        vfile.has_subtitle = os.path.exists(vfile.get_srt_file_path())
         json_file_path = os.path.join(settings.SERVER_VIDEO_DIR,
-                                      '%s.info.json' % vfile.get_srt_filename())
+                                      '%s.info.json' % vfile.get_filename())
         info = json.load(open(json_file_path))
         vfile.title = info.get('title')
         vfile.desp = info.get('description')
@@ -45,7 +45,13 @@ for r in to_download:
         r.status = 'dropbox_pushing'
         r.save()
         c = dropbox_user.get_client()
-        resp = c.put_file('/%s.%s' % (vfile.title, vfile.ext), open(vfile.get_file_path()))
+        title = vfile.title
+        #https://www.dropbox.com/help/145/en
+        incompatible_characters = ['/', '\\', '<', '>', ':', '"', '|', '?', '*']
+        for char in incompatible_characters:
+            title = title.replace(char, '')
+        #print title
+        resp = c.put_file('/%s.%s' % (title, vfile.ext), open(vfile.get_file_path()))
         #需要错误处理
         #...
     print 'finished'
