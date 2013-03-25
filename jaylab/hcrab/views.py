@@ -1,5 +1,5 @@
 #coding=utf-8
-import re, uuid
+import re,uuid
 from hashlib import md5
 from django.conf import settings
 from django.core.context_processors import csrf
@@ -19,40 +19,49 @@ def file2md5(url, quality):
 
 
 def index(request):
-    sid = request.session.get('session_id', '')
-
     records = None
-    if sid:
-        records = DownloadRecord.objects.filter(session_id=sid).order_by('-created_at')
-        for r in records:
-            if r.status != 'finished':
-                r.title = '-'
-                r.durl = r.vfile.get_status_display()
-            else:
-                r.title = ' '.join( r.vfile.title.split()[:6]) + '...'
-                r.durl = r.get_download_url()
+    dropbox_uid = request.session.get('dropbox_uid', '')
+    if dropbox_uid:
+        records = DownloadRecord.objects.filter(dropbox_user__uid=dropbox_uid).order_by('-created_at')[:100]
     else:
-        sid = uuid.uuid1().hex
-        request.session['session_id'] = sid
-        request.session.set_expiry(settings.EXPIRE_TIME)
+        sid = request.session.get('session_id', '')
+        if sid:
+            records = DownloadRecord.objects.filter(session_id=sid).order_by('-created_at')[:100]
+        else:
+            sid = uuid.uuid1().hex
+            request.session['session_id'] = sid
+            request.session.set_expiry(settings.EXPIRE_TIME)
+
+    for r in records:
+        if r.vfile.is_downloaded():
+            r.title = ' '.join( r.vfile.title.split()[:6]) + '...'
+            r.durl = r.get_download_url()
+        else:
+            r.title = '-'
+            r.durl = r.get_status_display()
 
     params = {}
     params.update(csrf(request))
     params['records'] = records
-
+    if dropbox_uid:
+        params['is_dropbox_user'] = True
     return render_to_response('hcrab/index.html', params)
 
 
 def add(request):
     back_url = reverse(index)
 
-    sid = request.session.get('session_id', '')
-    if not sid:
-        info = u'请打开浏览器cookie支持。'
-        return render_to_response('hcrab/info.html',
-                                  {'info': info,
-                                   'interval': 3,
-                                   'back_url': back_url})
+    dropbox_uid = request.session.get('dropbox_uid', '')
+    if dropbox_uid:
+        dropbox_user = DropboxUser.objects.get(uid=dropbox_uid)
+    else:
+        sid = request.session.get('session_id', '')
+        if not sid:
+            info = u'请打开浏览器cookie支持。'
+            return render_to_response('hcrab/info.html',
+                                      {'info': info,
+                                       'interval': 3,
+                                       'back_url': back_url})
 
     url = request.POST.get('url', '')
     if not url:
@@ -77,7 +86,10 @@ def add(request):
 
     m5 = file2md5(url, quality)
     y, is_created = VideoFile.objects.get_or_create(md5=m5, watch_url=url, quality=quality)
-    DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
+    if dropbox_user:
+        DownloadRecord.objects.get_or_create(dropbox_user=dropbox_user, vfile=y)
+    else:
+        DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
     return redirect(back_url)
 
 
@@ -87,17 +99,17 @@ def dropbox_sign(request):
     request_token = sess.obtain_request_token()
     url = sess.build_authorize_url(request_token,
                                    oauth_callback=settings.DROPBOX_AUTHRIZED_CALLBACK_URL)
-
+    print url
     request.session['request_key'] = request_token.key
-    request.session['request_secret'] = request.secret
+    request.session['request_secret'] = request_token.secret
     return redirect(url)
 
 
 def dropbox_authrized(request):
     back_url = reverse(index)
 
-    uid = request.Get.get('uid', '')
-    oauth_token = request.Get.get('oauth_token', '')
+    uid = request.GET.get('uid', '')
+    oauth_token = request.GET.get('oauth_token', '')
     if not uid and not oauth_token:
         info = u'Dropbox 认证出问题了 :( 麻烦再一遍。'
         return render_to_response('hcrab/info.html',
@@ -125,6 +137,9 @@ def dropbox_authrized(request):
     #client = client = client.DropboxClient(sess)
     #info = client.account_info()
     user.save()
+
+    request.session['dropbox_uid'] = uid
+
     info = 'Ok, Dropbox 认证成功 :)'
     return render_to_response('hcrab/info.html',
                               {'info': info,
