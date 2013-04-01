@@ -52,6 +52,7 @@ def add(request):
     back_url = reverse(index)
 
     dropbox_uid = request.session.get('dropbox_uid', '')
+    dropbox_user = None
     if dropbox_uid:
         dropbox_user = DropboxUser.objects.get(uid=dropbox_uid)
     else:

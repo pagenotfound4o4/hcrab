@@ -14,14 +14,15 @@ for r in to_download:
     print 'process download record: %i .' % r.id
     vfile = r.vfile
     if not vfile.is_downloaded():
-        vfile.status = 'downloading'
-        vfile.save()
+        r.status = 'downloading'
+        r.save()
         print 'has not download. start to download.'
         cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), vfile.watch_url)
         subprocess.call(cmd, shell=True)
+        print 'finish youtube-dl process'
         if not vfile.is_downloaded():
-            vfile.status = 'download_failed'
-            vfile.save()
+            r.status = 'download_failed'
+            r.save()
             print 'downloaded failed.'
             continue
         print 'downloaded.'
@@ -52,6 +53,8 @@ for r in to_download:
             title = title.replace(char, '')
         #print title
         resp = c.put_file('/%s.%s' % (title, vfile.ext), open(vfile.get_file_path()))
+        if vfile.has_subtitle:
+           resp = c.put_file('/%s.srt' % title, open(vfile.get_srt_file_path()))
         #需要错误处理
         #...
     print 'finished'
