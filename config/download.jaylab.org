@@ -1,6 +1,6 @@
 server {
     listen   80 ;
-    server_name download.jaylab.org;
+    server_name d.jaylab.org download.jaylab.org;
 
     access_log /home/jay/websites/download.jaylab.org/log/access.log;
 

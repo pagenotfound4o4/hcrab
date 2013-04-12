@@ -4,7 +4,7 @@ os.environ['DJANGO_SETTINGS_MODULE'] = 'jaylab.settings'
 from django.conf import settings
 from jaylab.hcrab.models import *
 
-command = '%s -i -c -R 3 --write-info-json --write-srt -o %s -f 18 %s'
+command = '%s -i -c -R 3 --write-info-json --write-srt -o %s -f %s %s'
 
 to_download = DownloadRecord.objects.filter(status='queue').\
                   order_by('created_at')[:settings.N_PER_MINUTE]
@@ -17,7 +17,11 @@ for r in to_download:
         r.status = 'downloading'
         r.save()
         print 'has not download. start to download.'
-        cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), vfile.watch_url)
+        if vfile.quality == 'h':
+            format = '22'
+        else:
+            format = '18'
+        cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), format, vfile.watch_url)
         subprocess.call(cmd, shell=True)
         print 'finish youtube-dl process'
         if not vfile.is_downloaded():

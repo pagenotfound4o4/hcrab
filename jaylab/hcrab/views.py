@@ -83,17 +83,21 @@ def add(request):
                                     'back_url':back_url,
                                     })
 
-    quality = 'm'
+    is_hd = request.POST.get('is_hd')
+    if is_hd:
+        quality = 'h'
+    else:
+        quality = 'm'
 
     m5 = file2md5(url, quality)
     y, is_created = VideoFile.objects.get_or_create(md5=m5, watch_url=url, quality=quality)
     if dropbox_user:
-        dr,is_created = DownloadRecord.objects.get_or_create(dropbox_user=dropbox_user, vfile=y)
+        dr, is_created = DownloadRecord.objects.get_or_create(dropbox_user=dropbox_user, vfile=y)
         dr.status = 'queue'
         dr.save()
     else:
-        dr,is_created = DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
-    	dr.status = 'queue'
+        dr, is_created = DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
+        dr.status = 'queue'
         dr.save()
     return redirect(back_url)
 

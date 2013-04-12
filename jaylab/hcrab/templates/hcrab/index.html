@@ -53,11 +53,14 @@ margin: 0 auto -60px;
         </div>
     <form action="{%url 'add' %}" method="post" class="form-inline">{% csrf_token %}
         <label>视频网址：</label>&nbsp;
-        <input type="text" class="input-xxlarge" style="width:638px" name="url" placeholder="比如：http://www.youtube.com/watch?v=8UjcqCx1Bvg">
-        &nbsp;&nbsp;<button type="submit" class="btn">下载</button>
+        <input type="text" class="input-xxlarge" style="width:575px" name="url" placeholder="比如：http://www.youtube.com/watch?v=8UjcqCx1Bvg">
+        &nbsp;&nbsp;
+        <input type="checkbox" name="is_hd">高清
+        &nbsp;&nbsp;
+        <button type="submit" class="btn">下载</button>
     </form>
     <div class="tooltips pull-right">
-    <a title="" data-toggle="tooltip" href="#" data-original-title="原理：你提交一个Youtube视频的观看地址，HCrab会把这个视频下载到Jaylab的服务器。然后，直接用迅雷之类的下载工具从Jaylab的服务器下载这个视频就ok了。">
+    <a title="" data-toggle="tooltip" href="#" data-original-title="原理：提交一个Youtube视频的观看地址，HCrab会把这个视频下载到Jaylab的服务器。然后，直接用迅雷之类的下载工具从Jaylab的服务器下载这个视频就ok了。在24小时内下载，过期自动删除。">
         帮助
     </a>
     &nbsp;&nbsp;
