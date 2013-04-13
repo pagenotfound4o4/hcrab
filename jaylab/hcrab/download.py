@@ -23,7 +23,14 @@ for r in to_download:
             format = '18'
         cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), format, vfile.watch_url)
         subprocess.call(cmd, shell=True)
-        print 'finish youtube-dl process'
+        print 'finish 1st youtube-dl process'
+        if not vfile.is_downloaded() and format == '22':
+            print 'try to download in low qulity'
+            format2 = '18'
+            cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), format2, vfile.watch_url)
+            subprocess.call(cmd, shell=True)
+            print 'finish 2nd youtube-dl process'
+
         if not vfile.is_downloaded():
             r.status = 'download_failed'
             r.save()
