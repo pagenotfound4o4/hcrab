@@ -4,6 +4,8 @@
 
 **寄居蟹Hcrab**，是一个离线下载youtube视频的web服务。
 
+Demo site: <http://d.jaylab.org>
+
 ### 安装
 ubuntu系统
 
