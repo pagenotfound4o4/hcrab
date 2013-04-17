@@ -34,17 +34,21 @@ for r in to_download:
         tried_times += 1
 
         if not vfile.is_downloaded():
+            is_success = False
             while tried_times < settings.MAX_DOWNLOAD_TIMES:
                 subprocess.call(cmd, shell=True)
                 tried_times += 1
                 if vfile.is_downloaded():
+                    is_success = True
                     break
                 time.sleep(0.5)
 
-            r.status = 'download_failed'
-            r.save()
-            print 'downloaded failed.'
-            continue
+            if not is_success:
+                r.status = 'download_failed'
+                r.save()
+                print 'downloaded failed.'
+                continue
+
         print 'downloaded.'
         vfile.has_subtitle = os.path.exists(vfile.get_srt_file_path())
         json_file_path = os.path.join(settings.SERVER_VIDEO_DIR,
