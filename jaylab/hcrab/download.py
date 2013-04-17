@@ -12,6 +12,7 @@ to_download = DownloadRecord.objects.filter(status='queue').\
 print len(to_download)
 for r in to_download:
     print 'process download record: %i .' % r.id
+    tried_times = 0
     vfile = r.vfile
     if not vfile.is_downloaded():
         r.status = 'downloading'
@@ -30,8 +31,16 @@ for r in to_download:
             cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), format2, vfile.watch_url)
             subprocess.call(cmd, shell=True)
             print 'finish 2nd youtube-dl process'
+        tried_times += 1
 
         if not vfile.is_downloaded():
+            while tried_times < settings.MAX_DOWNLOAD_TIMES:
+                subprocess.call(cmd, shell=True)
+                tried_times += 1
+                if vfile.is_downloaded():
+                    break
+                time.sleep(0.5)
+
             r.status = 'download_failed'
             r.save()
             print 'downloaded failed.'

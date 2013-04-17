@@ -11,6 +11,7 @@ VIDEO_URL = '/yt'
 EXPIRE_TIME = 86400
 YOUTUBE_DL_PATH = '/usr/local/bin/youtube-dl'
 N_PER_MINUTE = 1 #每分钟处理多少下载记录
+MAX_DOWNLOAD_TIMES = 3
 
 #for dropbox
 ENABLE_DROPBOX = True
