@@ -59,7 +59,7 @@ def add(request):
         sid = request.session.get('session_id', '')
         if not sid:
             info = u'请打开浏览器cookie支持。'
-            return render_to_response('hcrab/info.html',
+            return render_to_response('info.html',
                                       {'info': info,
                                        'interval': 3,
                                        'back_url': back_url})
@@ -67,7 +67,7 @@ def add(request):
     url = request.POST.get('url', '')
     if not url:
         info = u'请填写视频链接。'
-        return render_to_response('hcrab/info.html',
+        return render_to_response('info.html',
                                   {'info': info,
                                    'interval': 3,
                                    'back_url': back_url})
@@ -78,7 +78,7 @@ def add(request):
     else:
         info ='视频地址不正确.'
         return render_to_response('info.html',
-                                  { 'infomation': info,
+                                  { 'info': info,
                                     'interval': 3,
                                     'back_url':back_url,
                                     })
@@ -121,7 +121,7 @@ def dropbox_authrized(request):
     oauth_token = request.GET.get('oauth_token', '')
     if not uid and not oauth_token:
         info = u'Dropbox 认证出问题了 :( 麻烦再一遍。'
-        return render_to_response('hcrab/info.html',
+        return render_to_response('info.html',
                                   {'info': info,
                                    'interval': 3,
                                    'back_url': back_url})
@@ -130,7 +130,7 @@ def dropbox_authrized(request):
     request_secret = request.session.get('request_secret')
     if not request_key and not request_secret:
         info = u'请打开浏览器cookie支持。'
-        return render_to_response('hcrab/info.html',
+        return render_to_response('info.html',
                                   {'info': info,
                                    'interval': 3,
                                    'back_url': back_url})
@@ -150,7 +150,7 @@ def dropbox_authrized(request):
     request.session['dropbox_uid'] = uid
 
     info = 'Ok, Dropbox 认证成功 :)'
-    return render_to_response('hcrab/info.html',
+    return render_to_response('info.html',
                               {'info': info,
                                'interval': 3,
                                'back_url': back_url})
