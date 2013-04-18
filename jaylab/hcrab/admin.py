@@ -4,7 +4,7 @@ from models import *
 
 
 class VideoFileAdmin(admin.ModelAdmin):
-    list_display = ('created_at', 'title', 'get_length_display')
+    list_display = ('created_at', 'title', 'get_length_display', 'quality')
 
 
 class DownloadRecordAdmin(admin.ModelAdmin):
