@@ -107,7 +107,7 @@ class DownloadRecord(models.Model):
     dropbox_user = models.ForeignKey(DropboxUser, null=True)
     status = models.CharField(max_length=50, choices=status_choices, default='queue')
     vfile = models.ForeignKey(VideoFile)
-
+    submit_url = models.CharField(max_length=400, blank=True, default='')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def get_download_url(self):

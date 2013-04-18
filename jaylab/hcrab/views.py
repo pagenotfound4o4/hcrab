@@ -65,6 +65,7 @@ def add(request):
                                        'back_url': back_url})
 
     url = request.POST.get('url', '')
+    origin_url = url
     if not url:
         info = u'请填写视频链接。'
         return render_to_response('info.html',
@@ -94,10 +95,12 @@ def add(request):
     if dropbox_user:
         dr, is_created = DownloadRecord.objects.get_or_create(dropbox_user=dropbox_user, vfile=y)
         dr.status = 'queue'
+        dr.submit_url = origin_url
         dr.save()
     else:
         dr, is_created = DownloadRecord.objects.get_or_create(session_id=sid, vfile=y)
         dr.status = 'queue'
+        dr.submit_url = origin_url
         dr.save()
     return redirect(back_url)
 
