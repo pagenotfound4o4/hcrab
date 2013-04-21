@@ -9,7 +9,8 @@ from dropbox import client, rest, session
 
 from models import *
 
-youtube_pattern = r'youtube\.com/watch\?v=[0-9, a-z, A-Z, \-, _]+'
+youtube_pattern = [r'youtube\.com/watch\?v=[0-9, a-z, A-Z, \-, _]+',
+                   r'youtu\.be/[0-9, a-z, A-Z, \-, _]+']
 
 
 def file2md5(url, quality):
@@ -72,9 +73,11 @@ def add(request):
                                   {'info': info,
                                    'interval': 3,
                                    'back_url': back_url})
-
-    r = re.search(youtube_pattern, url)
-    if r:
+    for p in youtube_pattern:
+        r = re.search(p, url)
+        if r:
+            break
+    if r:        
         url = r.group()
     else:
         info ='视频地址不正确.'
@@ -159,4 +162,5 @@ def dropbox_authrized(request):
                                'back_url': back_url})
 
 
-
+def gusetbook(request):
+    return render_to_response('hcrab/guestbook.html')
