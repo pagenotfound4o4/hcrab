@@ -1,5 +1,5 @@
 #coding=utf-8
-import re,uuid
+import re,uuid, datetime
 from hashlib import md5
 from django.conf import settings
 from django.core.context_processors import csrf
@@ -95,6 +95,9 @@ def add(request):
 
     m5 = file2md5(url, quality)
     y, is_created = VideoFile.objects.get_or_create(md5=m5, watch_url=url, quality=quality)
+    y.latest_ref = datetime.date.today()
+    y.save()
+
     if dropbox_user:
         dr, is_created = DownloadRecord.objects.get_or_create(dropbox_user=dropbox_user, vfile=y)
         dr.status = 'queue'

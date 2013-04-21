@@ -9,4 +9,5 @@ south>=0.7.6
 youtube-dl
 gunicorn
 dropbox
+python-dateutil
 #django-extensions
