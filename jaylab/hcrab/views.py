@@ -80,8 +80,13 @@ def add(request):
     if r:        
         url = r.group()
     else:
-        info ='视频地址不正确.'
-        return render_to_response('info.html',
+        r = re.search('v=([0-9, a-z, A-Z, \-, _]+)', url)
+        if url.find('youtube.com') != -1 and r:
+            url = "youtube.com/watch?" + r.group()
+            print url
+        else:
+            info ='视频地址不正确.'
+            return render_to_response('info.html',
                                   { 'info': info,
                                     'interval': 3,
                                     'back_url':back_url,
