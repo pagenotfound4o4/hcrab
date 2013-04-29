@@ -9,6 +9,7 @@ fs = VideoFile.objects.filter(latest_ref__lt=qt).all()
 for f in fs:
     try:
         os.remove(f.get_file_path())
+        print '%s deleted'%f.md5
         time.sleep(0.1)
     except OSError:
         pass
