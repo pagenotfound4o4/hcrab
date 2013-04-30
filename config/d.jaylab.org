@@ -6,15 +6,15 @@ server {
     ssl_certificate /etc/nginx/ssl/d.jaylab.org.crt;
     ssl_certificate_key /etc/nginx/ssl/d.jaylab.org.key;
 
-    access_log /home/jay/websites/download.jaylab.org/log/access.log;
+    access_log /home/jay/websites/d.jaylab.org/log/access.log;
 
     location /yt/ {
         add_header Content-Disposition "attachment";
-        root /home/jay/websites/download.jaylab.org/;
+        root /home/jay/websites/d.jaylab.org/;
     }
 
     location /static_root/ {
-        root /home/jay/websites/download.jaylab.org/jaylab/static_root/;
+        root /home/jay/websites/d.jaylab.org/jaylab/static_root/;
         rewrite ^/static_root/(.*)$ /$1 break;
     }
 
@@ -29,8 +29,16 @@ server {
 
 server {
     listen 80;
-    server_name download.jaylab.org d.jaylab.org jaylab.org www.jaylab.org;
-    rewrite     ^   https://d.jaylab.org$request_uri? permanent;
+    server_name d.jaylab.org d.jaylab.org jaylab.org www.jaylab.org;
+
+    location /yt/ {
+        add_header Content-Disposition "attachment";
+        root /home/jay/websites/d.jaylab.org/;
+    }
+    
+    location / {
+        rewrite     ^   https://d.jaylab.org$request_uri? permanent;
+    }
 }
 
 
