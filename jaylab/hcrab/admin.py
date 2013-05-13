@@ -8,7 +8,7 @@ class VideoFileAdmin(admin.ModelAdmin):
 
 
 class DownloadRecordAdmin(admin.ModelAdmin):
-    list_display = ('created_at', 'vfile', 'get_status_display')
+    list_display = ('created_at', 'vfile', 'session_id', 'get_status_display')
     #list_filter = ('session_id',)
 
 class DropboxUserAdmin(admin.ModelAdmin):

@@ -4,7 +4,7 @@ from dateutil.relativedelta import *
 os.environ['DJANGO_SETTINGS_MODULE'] = 'jaylab.settings'
 from jaylab.hcrab.models import *
 
-qt = datetime.datetime.today() + relativedelta(days=-2)
+qt = datetime.datetime.today() + relativedelta(days=-1)
 fs = VideoFile.objects.filter(latest_ref__lt=qt).all()
 for f in fs:
     try:

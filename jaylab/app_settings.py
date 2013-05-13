@@ -10,7 +10,7 @@ SERVER_VIDEO_DIR = '/home/jay/websites/d.jaylab.org/yt'
 VIDEO_URL = '/yt'
 EXPIRE_TIME = 86400
 YOUTUBE_DL_PATH = '/home/jay/Envs/jaylab/bin/youtube-dl'
-N_PER_MINUTE = 1 #每分钟处理多少下载记录
+N_PER_MINUTE = 2 #每分钟处理多少下载记录
 MAX_DOWNLOAD_TIMES = 3
 
 #for dropbox
