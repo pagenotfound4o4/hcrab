@@ -28,7 +28,7 @@ sudo cp config/jay.pth /usr/lib/python2.7/dist-packages/
 10. ./manage.py collectstatic
 11. 修改nginx设置文件. vim config/hcrab (主要修改/home/jay/websites/download.jaylab.org/为你的目录)
 12. sudo cp config/hcrab /etc/nginx/site-avaiable;ln -s /etc/nginx/site-avaiable/hcrab /etc/nginx/site-enabled/;sudo service nginx reload
-13. 用gunicorn做wsgi server: gunicorn -D -b 127.0.0.1:8000 jaylab/settings.py
+13. 用gunicorn做wsgi server: gunicorn_django -D -b 127.0.0.1:8000 jaylab/settings.py
 14. 把download.py 放到crontab，一分钟执行一次。
 
 ### 授权
