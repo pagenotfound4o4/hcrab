@@ -8,6 +8,7 @@ from django.core.urlresolvers import reverse
 from dropbox import client, rest, session
 
 from models import *
+from utils import *
 
 youtube_pattern = [r'youtube\.com/watch\?v=[0-9, a-z, A-Z, \-, _]+',
                    r'youtu\.be/[0-9, a-z, A-Z, \-, _]+']
@@ -44,6 +45,9 @@ def index(request):
     params = {}
     params.update(csrf(request))
     params['records'] = records
+
+    params['disk_used_percent'] = disk_usage()[4]
+
     if dropbox_uid:
         params['is_dropbox_user'] = True
     return render_to_response('hcrab/index.html', params)
