@@ -64,7 +64,13 @@ def add(request):
                                       {'info': info,
                                        'interval': 3,
                                        'back_url': back_url})
-
+	n = DownloadRecord.objects.filter(session_id=sid).count()
+        if n >= settings.N_PER_USER_EVERYDAY:
+            info = u'Sorry, 因为服务器资源有限，每个用户每天只能下载20个Youtube视频 :('
+            return render_to_response('info.html',
+                                      {'info': info,
+                                       'interval': 5,
+                                       'back_url': back_url})
     url = request.POST.get('url', '')
     origin_url = url
     if not url:
