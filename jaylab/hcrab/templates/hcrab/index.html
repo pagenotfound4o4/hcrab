@@ -67,7 +67,7 @@ margin: 0 auto -60px;
     {% if is_dropbox_user %}
         <a href="#">已连接到Dropbox</a>
     {% else %}
-        <a data-toggle="tooltip" data-original-title="连接你的Dropbox账号，离线下载的视频会自动推送到你的Dropbox :)" href="{%url 'dropbox_signin' %}">
+        <a data-toggle="tooltip" data-original-title="由于服务器资源有限，暂时暂停dropbox同步支持，sorry :(" href="#">
             连接Dropbox
         </a>
     {% endif %}
