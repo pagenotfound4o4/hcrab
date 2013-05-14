@@ -82,7 +82,7 @@ class VideoFile(models.Model):
 
     def get_srt_filename(self):
         '''字幕文件的名字'''
-        return self.md5 + '.srt'
+        return self.md5 + '.en.srt'
 
     def get_length_display(self):
         if self.length:
