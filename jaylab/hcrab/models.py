@@ -71,7 +71,7 @@ class VideoFile(models.Model):
     has_subtitle = models.BooleanField(default=False)
     website = models.CharField(max_length=20, default=u'youtube')
 
-    latest_ref = models.DateField(blank=True, null=True)
+    latest_ref = models.DateTimeField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __unicode__(self):

@@ -32,7 +32,7 @@ def index(request):
         else:
             sid = uuid.uuid1().hex
             request.session['session_id'] = sid
-            request.session.set_expiry(settings.EXPIRE_TIME)
+            request.session.set_expiry(settings.EXPIRE_HOURS*3600)
 
     for r in records:
         if r.vfile.is_downloaded():
