@@ -71,7 +71,7 @@ def add(request):
 	    
         n = DownloadRecord.objects.filter(session_id=sid).count()
         if n >= settings.N_PER_USER_EVERYDAY:
-            info = u'Sorry, 因为服务器资源有限，每个用户每天只能下载20个Youtube视频 :('
+            info = u'Sorry, 因为服务器资源有限，每个用户在%i小时内只能下载%i个Youtube视频 :('%(settings.EXPIRE_HOURS, settings.N_PER_USER_EVERYDAY)
             return render_to_response('info.html',
                                       {'info': info,
                                        'interval': 5,

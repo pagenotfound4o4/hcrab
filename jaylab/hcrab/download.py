@@ -23,6 +23,7 @@ for r in to_download:
         else:
             format = '18'
         cmd = command % (settings.YOUTUBE_DL_PATH, vfile.get_file_path(), format, vfile.watch_url)
+        print cmd
         subprocess.call(cmd, shell=True)
         print 'finish 1st youtube-dl process'
         if not vfile.is_downloaded() and format == '22':
