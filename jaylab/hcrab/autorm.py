@@ -6,9 +6,9 @@ from jaylab.hcrab.models import *
 from django.conf import settings
 
 qt = datetime.datetime.now() + relativedelta(hours=-settings.EXPIRE_HOURS)
-today = datetime.date.today()
-today2 = datetime.datetime(today.year, today.month, today.day, 0 , 0)
-fs = VideoFile.objects.filter(latest_ref__lt=qt).filter(latest_ref__gt=today2).all()
+yestoday = datetime.date.today() + relativedelta(days=-1)
+yestoday2 = datetime.datetime(yestoday.year, yestoday.month, yestoday.day, 0 , 0)
+fs = VideoFile.objects.filter(latest_ref__lt=qt).filter(latest_ref__gt=yestoday2).all()
 print '%i files is about to delete'%len(fs)
 for f in fs:
     if not f.is_downloaded():continue

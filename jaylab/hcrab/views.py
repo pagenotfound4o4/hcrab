@@ -119,7 +119,7 @@ def add(request):
 
     m5 = file2md5(url, quality)
     y, is_created = VideoFile.objects.get_or_create(md5=m5, watch_url=url, quality=quality)
-    y.latest_ref = datetime.date.today()
+    y.latest_ref = datetime.datetime.now()
     y.save()
 
     if dropbox_user:
