@@ -1,5 +1,5 @@
 #coding=utf-8
-import os, datetime, time
+import os, datetime, time, subprocess
 from dateutil.relativedelta import *
 os.environ['DJANGO_SETTINGS_MODULE'] = 'jaylab.settings'
 from jaylab.hcrab.models import *
@@ -20,3 +20,4 @@ for f in fs:
     except OSError:
         pass
 
+subprocess.call('rm %s/*part'%settings.SERVER_VIDEO_DIR, shell=True)
