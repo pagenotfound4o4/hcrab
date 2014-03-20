@@ -11,7 +11,7 @@ VIDEO_URL = '/yt'
 EXPIRE_HOURS = 2 #多少时间后删除
 YOUTUBE_DL_PATH = '/home/jay/Envs/jaylab/bin/youtube-dl'
 N_PER_MINUTE = 1 #每分钟处理多少下载记录
-N_PER_USER_EVERYDAY = 8 #每EXPIRE_HOURS每个用户最多下载多少个视频
+N_PER_USER_EVERYDAY = 15 #每EXPIRE_HOURS每个用户最多下载多少个视频
 MAX_DOWNLOAD_TIMES = 3
 
 #for dropbox
