@@ -77,7 +77,7 @@ def add(request):
                                        'interval': 5,
                                        'back_url': back_url})
 
-    if int(disk_usage()[4][:-1]) > 80:
+    if int(disk_usage()[4][:-1]) > 90:
         info = u'Sorry, 服务器硬盘已满，请下个小时来下载吧 :('
         return render_to_response('info.html',
                                   {'info': info,
