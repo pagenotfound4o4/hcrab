@@ -54,8 +54,8 @@ def index(request):
 
 
 def add(request):
-    back_url = reverse(index)
-
+    #back_url = reverse(index)
+    back_url = '/'
     dropbox_uid = request.session.get('dropbox_uid', '')
     dropbox_user = None
     if dropbox_uid:
@@ -132,7 +132,7 @@ def add(request):
         dr.status = 'queue'
         dr.submit_url = origin_url
         dr.save()
-    return redirect(back_url)
+    return redirect('https://d.jaylab.org')
 
 
 def dropbox_sign(request):

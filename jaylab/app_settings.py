@@ -4,7 +4,7 @@ import os
 PROJECT_DIR = os.path.dirname(os.path.realpath(__file__))
 
 #setting for app hcrab
-HOST = 'http://d.jaylab.org'
+HOST = 'https://d.jaylab.org'
 SERVER_VIDEO_DIR = '/home/jay/websites/d.jaylab.org/yt'
 #SERVER_VIDEO_DIR = '/Users/jay/temp/yt'
 VIDEO_URL = '/yt'
